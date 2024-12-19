@@ -19,6 +19,10 @@ h1, h2, h3, p {
   
 }
 
+#file-upload-button{
+  border: white;
+}
+
 #glowing-box-section {
   text-align: center;
   margin: 4rem 0;
