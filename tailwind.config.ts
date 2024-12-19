@@ -63,7 +63,8 @@ export default {
   		},
   		animation: {
   			'shiny-text': 'shiny-text 8s infinite',
-  			rainbow: 'rainbow var(--speed, 2s) infinite linear'
+  			rainbow: 'rainbow var(--speed, 2s) infinite linear',
+  			shine: 'shine var(--duration) infinite linear'
   		},
   		keyframes: {
   			'shiny-text': {
@@ -80,6 +81,17 @@ export default {
   				},
   				'100%': {
   					'background-position': '200%'
+  				}
+  			},
+  			shine: {
+  				'0%': {
+  					'background-position': '0% 0%'
+  				},
+  				'50%': {
+  					'background-position': '100% 100%'
+  				},
+  				to: {
+  					'background-position': '0% 0%'
   				}
   			}
   		}

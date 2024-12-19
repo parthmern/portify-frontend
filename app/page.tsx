@@ -11,13 +11,14 @@ import WordPullUp from "./components/word-pull-up";
 import BlurIn from "./components/blur-in";
 import { RainbowButton } from "./components/rainbow-button";
 import HeroVideoDialog from "./components/hero-video-dialog";
+import Footer from "./components/Footer";
 const ThemeComponent = dynamic(() => import("./components/theme-switch"), {
   ssr: false,
 });
 
 export default function Home() {
   return (
-    <div className="dark:text-black overflow-x-hidden  dark:bg-white text-white bg-[#08090a] h-screen">
+    <div className="dark:text-black overflow-x-hidden  dark:bg-white text-white bg-[#08090a]  h-screen">
       {/* <ThemeComponent /> */}
       <Navbar />
       <div className="relative">
@@ -45,6 +46,7 @@ export default function Home() {
 
       <div className="w-full h-full mt-11 ">
         <div className="relative z-[9999] glowing-box w-[70%] mx-auto">
+          
           <HeroVideoDialog
             className="dark:hidden block"
             animationStyle="from-center"
@@ -61,6 +63,8 @@ export default function Home() {
           />
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }
