@@ -19,6 +19,26 @@ h1, h2, h3, p {
   
 }
 
+#glowing-box-section {
+  text-align: center;
+  margin: 4rem 0;
+ }
+ .glowing-box {
+
+  background-color: #282828;
+ 
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.7), 0 0 40px rgba(0, 255, 255, 0.7),
+    0 0 60px rgba(0, 255, 255, 0.7);
+  transition: box-shadow 0.3s;
+ }
+ .glowing-box:hover {
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.9), 0 0 60px rgba(0, 255, 255, 0.9),
+    0 0 90px rgba(0, 255, 255, 0.9);
+ }
+ 
+ 
+ 
+
 .neon {
   animation: neonAnim 2s alternate-reverse infinite;
   color: #68FF08;
@@ -75,6 +95,11 @@ backdrop-filter: blur(5.1px);
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --color-1: 0 100% 63%;
+    --color-2: 270 100% 63%;
+    --color-3: 210 100% 63%;
+    --color-4: 195 100% 63%;
+    --color-5: 90 100% 63%;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -101,6 +126,11 @@ backdrop-filter: blur(5.1px);
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --color-1: 0 100% 63%;
+    --color-2: 270 100% 63%;
+    --color-3: 210 100% 63%;
+    --color-4: 195 100% 63%;
+    --color-5: 90 100% 63%;
   }
 }
 
