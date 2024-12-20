@@ -1,3 +1,4 @@
+import axios from "axios";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -13,16 +14,24 @@ const NEXT_AUTH = {
     callbacks: {
       async signIn({ user, account, profile, email, credentials }: any) {
         console.log("User profile on signIn:", profile);
-  
-        // Custom authentication logic can go here
-        // Example: Check if the user's email matches your criteria
-        if (profile?.email) {
+
+        const res = await axios.post("http://127.0.0.1:8787/api/v1/user/login", {
+            name: profile?.given_name,
+            email: profile?.email,
+            id : profile?.sub,
+        });
+
+        console.log("Resssss=>", res);
+
+        if (res.status == 200) {
           console.log("User authenticated");
           return true;
+        }else{
+            console.log("User authentication failed");
+            return false;
         }
   
-        console.log("User authentication failed");
-        return false;
+        
       },
       async jwt({ token, user, account, profile }: any) {
         console.log("Token before JWT callback:", token);

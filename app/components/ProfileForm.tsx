@@ -6,12 +6,17 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import axios, { AxiosResponse, AxiosRequestConfig, RawAxiosRequestHeaders } from 'axios';
+import { useSession } from "next-auth/react";
+
+
 
 export function ProfileForm() {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const session = useSession();
 
   const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -58,9 +63,33 @@ export function ProfileForm() {
       console.log("About:", about);
       console.log("Photo:", photo);
 
+      const userData = JSON.stringify(session?.data?.user);
+      if(!userData){
+        throw new Error("User Cookies are required.");
+      }
+      const data = {
+        name : name,
+        about : about,
+        img : photo,
+        userData : userData
+      }
+
+      try {
+        const response = await axios.post("http://127.0.0.1:8787/api/v1/profile", data, {
+          headers: {
+            'Content-Type': 'multipart/form-data', // Required for file uploads
+          },
+        });
+        console.log('Response:', response.data);
+      } catch (error) {
+        console.log('Error during file upload:', error);
+        throw new Error('Error during file upload');
+      }
+      
+
       return { message: "Profile submitted successfully!" };
     } catch (error: any) {
-      console.error("Error submitting profile:", error.message);
+      console.log("Error submitting profile:", error.message);
       throw new Error("Failed to submit the profile. Please try again.");
     }
   }
@@ -103,6 +132,10 @@ export function ProfileForm() {
       </Button>
       {message && <p className="text-green-600">{message}</p>}
       {error && <p className="text-red-600">{error}</p>}
+      <div>
+      {JSON.stringify(session.data?.user)}
+    </div>
+
     </form>
   );
 }
