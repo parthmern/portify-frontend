@@ -1,26 +1,50 @@
 "use client";
 
-import { useState, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import axios, { AxiosResponse, AxiosRequestConfig, RawAxiosRequestHeaders } from 'axios';
+import axios from "axios";
 import { useSession } from "next-auth/react";
 
-
-
 export function ProfileForm() {
+  const { data: session, status } = useSession();
+  const [name, setName] = useState("");
+  const [about, setAbout] = useState("");
+  const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const session = useSession();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      const fetchProfile = async () => {
+        try {
+          const user : any = session?.user;
+          const userId = user?.id;
+          if (!userId) return;
+          const res = await axios.get(`http://127.0.0.1:8787/api/v1/profile/${userId}`);
+          const profile = res.data?.profileData;
+          if (profile) {
+            setName(profile.name || "");
+            setAbout(profile.about || "");
+            setPhotoPreview(null); 
+          }
+        } catch (err) {
+          console.error("Error fetching profile data:", err);
+        }
+      };
+      fetchProfile();
+    }
+  }, [session, status]);
 
   const handlePhotoChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setPhoto(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setPhotoPreview(reader.result as string);
@@ -35,74 +59,69 @@ export function ProfileForm() {
     setMessage(null);
     setError(null);
 
-    const formData = new FormData(event.currentTarget);
-
     try {
-      const result = await submitProfile(formData);
-      setMessage(result.message || "Profile submitted successfully!");
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("about", about);
+      if (photo) {
+        formData.append("photo", photo);
+      }
+
+      const userData = JSON.stringify(session?.user);
+      if (!userData) {
+        throw new Error("User data is required.");
+      }
+
+      formData.append("userData", userData);
+
+      const response = await axios.post("http://127.0.0.1:8787/api/v1/profile", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setMessage("Profile submitted successfully!");
+      console.log("Response:", response.data);
     } catch (err: any) {
       setError(err.message || "Failed to submit the profile.");
+      console.error("Error submitting profile:", err);
     } finally {
       setIsPending(false);
     }
   };
 
-  async function submitProfile(formData: FormData) {
-    try {
-        console.log("started submitiing");
-      const name = formData.get("name");
-      const about = formData.get("about");
-      const photo = formData.get("photo");
+  // Wait for session to be loaded
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
 
-      if (!name || !about || !photo) {
-        throw new Error("All fields are required.");
-      }
-
-      // Example: Simulate saving to a database or an API
-      console.log("Name:", name);
-      console.log("About:", about);
-      console.log("Photo:", photo);
-
-      const userData = JSON.stringify(session?.data?.user);
-      if(!userData){
-        throw new Error("User Cookies are required.");
-      }
-      const data = {
-        name : name,
-        about : about,
-        img : photo,
-        userData : userData
-      }
-
-      try {
-        const response = await axios.post("http://127.0.0.1:8787/api/v1/profile", data, {
-          headers: {
-            'Content-Type': 'multipart/form-data', // Required for file uploads
-          },
-        });
-        console.log('Response:', response.data);
-      } catch (error) {
-        console.log('Error during file upload:', error);
-        throw new Error('Error during file upload');
-      }
-      
-
-      return { message: "Profile submitted successfully!" };
-    } catch (error: any) {
-      console.log("Error submitting profile:", error.message);
-      throw new Error("Failed to submit the profile. Please try again.");
-    }
+  if (status === "unauthenticated") {
+    return <p>Please log in to view this page.</p>;
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div>
         <Label htmlFor="name">Name</Label>
-        <Input type="text" id="name" name="name" required />
+        <Input
+          type="text"
+          id="name"
+          name="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
       </div>
       <div>
         <Label htmlFor="about">About</Label>
-        <Textarea id="about" name="about" rows={4} required />
+        <Textarea
+          id="about"
+          name="about"
+          rows={4}
+          value={about}
+          onChange={(e) => setAbout(e.target.value)}
+          required
+        />
       </div>
       <div>
         <Label htmlFor="photo">Photo</Label>
@@ -112,7 +131,6 @@ export function ProfileForm() {
           name="photo"
           accept="image/*"
           onChange={handlePhotoChange}
-          required
           className="text-white bg-[#08090a]"
         />
         {photoPreview && (
@@ -132,10 +150,6 @@ export function ProfileForm() {
       </Button>
       {message && <p className="text-green-600">{message}</p>}
       {error && <p className="text-red-600">{error}</p>}
-      <div>
-      {JSON.stringify(session.data?.user)}
-    </div>
-
     </form>
   );
 }

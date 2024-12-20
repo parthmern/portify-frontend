@@ -15,21 +15,29 @@ const NEXT_AUTH = {
       async signIn({ user, account, profile, email, credentials }: any) {
         console.log("User profile on signIn:", profile);
 
-        const res = await axios.post("http://127.0.0.1:8787/api/v1/user/login", {
+        console.log("putting req on db");
+        try {
+          const res = await axios.post("http://127.0.0.1:8787/api/v1/user/login", {
             name: profile?.given_name,
             email: profile?.email,
-            id : profile?.sub,
-        });
-
-        console.log("Resssss=>", res);
-
-        if (res.status == 200) {
-          console.log("User authenticated");
-          return true;
-        }else{
-            console.log("User authentication failed");
+            id: profile?.sub,
+          });
+          console.log("Response from DB:", res.data);
+          if (res.status === 200) {
+            return true;
+          } else {
+            console.error("Unexpected response status:", res.status);
             return false;
+          }
+        } catch (error) {
+          if (axios.isAxiosError(error)) {
+            console.error("Axios error:", error.response?.data || error.message);
+          } else {
+            console.error("Unexpected error:", error);
+          }
+          return false;
         }
+        
   
         
       },
