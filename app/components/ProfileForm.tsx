@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, useEffect, ChangeEvent, useMemo } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,8 +8,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import MDEditor from '@uiw/react-md-editor';
+
+
+
 
 export function ProfileForm() {
+
+  
+
   const { data: session, status } = useSession();
   const [name, setName] = useState("");
   const [about, setAbout] = useState("");
@@ -18,6 +25,7 @@ export function ProfileForm() {
   const [isPending, setIsPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [aboutSection, setAboutSection] = useState<string | null>(null);
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -32,6 +40,7 @@ export function ProfileForm() {
             setName(profile.name || "");
             setAbout(profile.about || "");
             setPhotoPreview(null); 
+            setAboutSection(profile.aboutSection || "");
           }
         } catch (err) {
           console.error("Error fetching profile data:", err);
@@ -66,6 +75,7 @@ export function ProfileForm() {
       if (photo) {
         formData.append("photo", photo);
       }
+      formData.append("aboutSection", aboutSection||"");
 
       const userData = JSON.stringify(session?.user);
       if (!userData) {
@@ -145,6 +155,16 @@ export function ProfileForm() {
           </div>
         )}
       </div>
+      
+      <div>
+        <Label htmlFor="aboutSection">About Section (Markdown)</Label>
+        <MDEditor
+          value={aboutSection || ""}
+          onChange={(value) => setAboutSection(value || "")}
+          preview="edit"
+        />
+      </div>
+
       <Button type="submit" disabled={isPending}>
         {isPending ? "Submitting..." : "Submit Profile"}
       </Button>

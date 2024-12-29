@@ -7,6 +7,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '../components/avatar'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import BlurFade from '../components/blur-fade'
+import Markdown from "react-markdown";
 
 export default function Page() {
     const params = useParams()
@@ -28,31 +29,46 @@ export default function Page() {
             <main className="flex  flex-col  space-y-10">
                 {
                     PROFILE ? (
-                        <section id="hero">
-                            <div className="mx-auto w-full max-w-2xl space-y-8">
-                                <div className="gap-2 flex justify-between">
-                                    <div className="flex-col flex flex-1 space-y-1.5">
-                                        <BlurFadeText
-                                            delay={0.04}
-                                            className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
-                                            yOffset={8}
-                                            text={`Hi, I'm ${PROFILE.name.split(" ")[0]} 👋`}
-                                        />
-                                        <BlurFadeText
-                                            className="max-w-[600px] md:text-xl"
-                                            delay={0.04}
-                                            text={PROFILE.about}
-                                        />
+                        <>
+                            <section id="hero">
+                                <div className="mx-auto w-full max-w-2xl space-y-8">
+                                    <div className="gap-2 flex justify-between">
+                                        <div className="flex-col flex flex-1 space-y-1.5">
+                                            <BlurFadeText
+                                                delay={0.04}
+                                                className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
+                                                yOffset={8}
+                                                text={`Hi, I'm ${PROFILE.name.split(" ")[0]} 👋`}
+                                            />
+                                            <BlurFadeText
+                                                className="max-w-[600px] md:text-xl"
+                                                delay={0.04}
+                                                text={PROFILE.about}
+                                            />
+                                        </div>
+                                        <BlurFade delay={0.04}>
+                                            <Avatar className="size-28 border">
+                                                <AvatarImage alt={PROFILE.name} src={PROFILE.img} />
+                                                <AvatarFallback>{PROFILE.initials || ""}</AvatarFallback>
+                                            </Avatar>
+                                        </BlurFade>
                                     </div>
-                                    <BlurFade delay={0.04}>
-                                        <Avatar className="size-28 border">
-                                            <AvatarImage alt={PROFILE.name} src={PROFILE.img} />
-                                            <AvatarFallback>{PROFILE.initials || ""}</AvatarFallback>
-                                        </Avatar>
-                                    </BlurFade>
+
                                 </div>
-                            </div>
-                        </section>
+                            </section>
+                            <section id="about">
+                                <BlurFade delay={0.04}>
+                                    <h2 className="text-xl font-bold">About</h2>
+                                </BlurFade>
+                                <BlurFade delay={0.04}>
+                                    <Markdown className="prose max-w-full text-pretty font-sans text-sm text-white/80 dark:prose-invert">
+                                        {PROFILE.aboutSection}
+                                    </Markdown>
+                                </BlurFade>
+                            </section>
+                        </>
+
+
                     ) : (
                         <div>laoding.</div>
                     )
