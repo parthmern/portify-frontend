@@ -11,50 +11,31 @@ import { useSession } from 'next-auth/react'
 export default function SkillsSection() {
     const [skills, setSkills] = useState<string[]>([])
     const [inputValue, setInputValue] = useState('')
-    const session: any = useSession();
+    const [githubUsername, setGithubUsername] = useState('')
     const [fetchingSkills, setFetchingSkills] = useState(true);
+    const session: any = useSession();
     let userId = session?.data?.user?.id;
 
-    // {
-    //     "data": {
-    //         "user": {
-    //             "id": "112590557890221636881",
-    //             "name": "Parth Ptl",
-    //             "email": "pptl8685@gmail.com"
-    //         },
-    //         "expires": "2025-01-28T22:59:00.292Z"
-    //     },
-    //     "status": "authenticated"
-    // }
-
-
-
     async function fetchSkills() {
-
-
-
-
         try {
             const req = await axios.get(`http://127.0.0.1:8787/api/v1/skills/${userId}`);
             console.log(req);
-            const fetchedSkills = (req?.data?.skills?.name) ? (req?.data?.skills?.name) : [];
+            const fetchedSkills = req?.data?.skills?.name || [];
+            const fetchedGithubUsername = req?.data?.skills?.githubUsername || 'null';
             setSkills(fetchedSkills);
-        }
-        catch (error) {
+            setGithubUsername(fetchedGithubUsername);
+        } catch (error) {
             console.log(error);
-        }
-        finally {
+        } finally {
             setFetchingSkills(false);
         }
-
     }
+
     useEffect(() => {
-
-        if (userId) { fetchSkills(); }
-
+        if (userId) {
+            fetchSkills();
+        }
     }, [userId]);
-
-
 
     const addSkill = () => {
         if (inputValue.trim() !== '' && !skills.includes(inputValue.trim())) {
@@ -75,22 +56,18 @@ export default function SkillsSection() {
     }
 
     const handleSubmit = async () => {
-        
-        console.log('Submitting skills:', skills);
+        console.log('Submitting skills and GitHub username:', { skills, githubUsername });
 
-        try{
+        try {
             const res = await axios.post(
                 "http://127.0.0.1:8787/api/v1/skills",
-                {skills, userId},
+                { skills, githubUsername, userId },
                 { headers: { 'Content-Type': 'application/json' } }
             );
             console.log(res);
-        }
-        catch(error){
+        } catch (error) {
             console.log(error);
         }
-        
-        
     }
 
     return (
@@ -111,7 +88,7 @@ export default function SkillsSection() {
                             />
                             <Button onClick={addSkill}>Add</Button>
                         </div>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap gap-2 mb-4">
                             {skills.map((skill, index) => (
                                 <Badge key={index} variant="secondary" className="px-2 py-1">
                                     {skill}
@@ -122,11 +99,22 @@ export default function SkillsSection() {
                                 </Badge>
                             ))}
                         </div>
+
+                        <div className="mb-4">
+                            <h3 className="text-lg font-semibold mb-2">GitHub Username</h3>
+                            <Input
+                                type="text"
+                                placeholder="Enter your GitHub username"
+                                value={githubUsername}
+                                onChange={(e) => setGithubUsername(e.target.value)}
+                            />
+                        </div>
+
                         <Button
                             onClick={handleSubmit}
                             className="w-full mt-10 bg-blue-600 text-white hover:bg-blue-700"
                         >
-                            Update Skills
+                            Update Skills & GitHub Username
                         </Button>
                     </>
                 )
@@ -134,4 +122,3 @@ export default function SkillsSection() {
         </div>
     )
 }
-

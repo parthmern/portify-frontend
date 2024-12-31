@@ -41,7 +41,10 @@ h1, h2, h3, p {
  }
  
  
- 
+ #gtc > div{
+  background-color: black !important; 
+  
+ }
 
 .neon {
   animation: neonAnim 2s alternate-reverse infinite;

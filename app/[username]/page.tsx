@@ -11,6 +11,7 @@ import Markdown from "react-markdown";
 import { Badge } from '@/components/ui/badge'
 import { GithubContributions } from '../components/github-calendar'
 
+
 export default function Page() {
     const params = useParams()
     const username = params.username as string
@@ -46,7 +47,7 @@ export default function Page() {
                                             />
                                             <BlurFadeText
                                                 className="max-w-[600px] md:text-xl"
-                                                delay={0.04}
+                                                delay={0.09}
                                                 text={PROFILE.about}
                                             />
                                         </div>
@@ -90,7 +91,9 @@ export default function Page() {
                             <section id="contributions">
                                 <BlurFade delay={0.04 * 10}>
                                     <h2 className="text-xl mb-4 font-bold">GitHub Contributions</h2>
-                                    <GithubContributions />
+                                    <div id='gtc' className='bg-[#000000] rounded-xl'>
+                                        <GithubContributions username={SKILLS?.githubUsername} />
+                                    </div>
                                 </BlurFade>
                             </section>
                         </>
