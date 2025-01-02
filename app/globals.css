@@ -12,6 +12,17 @@ h1, h2, h3, p {
   font-family: var(--font-geist-sans);
 }
 
+#mainPage{
+  font-family: var(--font-geist-sans);
+}
+
+.workCard {
+  border: none; /* Remove other borders */
+  border-bottom: 0.1px dashed #e5e7eb83 ;
+}
+
+
+
 .noricanFont {
   font-family: "Norican", serif;
   font-weight: 400;

@@ -172,6 +172,8 @@ export default function ExperienceSection() {
         })
         setLogo(null)
 
+        fetchExperiences()
+
 
     } catch (err) {
       setError('Failed to add experience. Please try again.')
@@ -188,6 +190,8 @@ export default function ExperienceSection() {
     try {
       const res = await axios.delete(`http://127.0.0.1:8787/api/v1/works/${id}`);
       console.log(res);
+
+      fetchExperiences();
 
       // // Remove the experience from the state
       // setExperiences(prev => prev.filter(exp => exp.id !== id))

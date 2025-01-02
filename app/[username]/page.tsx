@@ -10,14 +10,19 @@ import BlurFade from '../components/blur-fade'
 import Markdown from "react-markdown";
 import { Badge } from '@/components/ui/badge'
 import { GithubContributions } from '../components/github-calendar'
+import { ResumeCard } from '../components/resume-card'
 
 
 export default function Page() {
+    const BLUR_FADE_DELAY = 0.04;
+
+
     const params = useParams()
     const username = params.username as string
 
     const [PROFILE, SETPROFILE] = useState<any>(null);
     const [SKILLS, SETSKILLS] = useState<any>(null);
+    const [WORK, SETWORK] = useState<any>([]);
 
     useEffect(() => {
         async function fetchUsernameDetails() {
@@ -25,12 +30,13 @@ export default function Page() {
             console.log(DATA);
             SETPROFILE(DATA?.data?.fetchedDetails?.profile);
             SETSKILLS(DATA?.data?.fetchedDetails?.skills);
+            SETWORK((prevWorks: any) => [...prevWorks, ...(DATA?.data?.fetchedDetails?.works || [])]);
         }
         fetchUsernameDetails();
     }, [username])
 
     return (
-        <div className='min-h-screen text-white  antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6  bg-[#08090a]'>
+        <div id='mainPage' className='min-h-screen text-white  antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6  bg-[#08090a]'>
             <main className="flex  flex-col  space-y-10">
                 {
                     PROFILE ? (
@@ -96,6 +102,38 @@ export default function Page() {
                                     </div>
                                 </BlurFade>
                             </section>
+
+                            <section id="work">
+                                <div className="flex min-h-0 flex-col bg-[#08090a] gap-y-3">
+                                    <BlurFade delay={BLUR_FADE_DELAY * 5}>
+                                        <h2 className="text-xl font-bold">Work Experience</h2>
+                                    </BlurFade>
+                                    
+                                    {WORK.map((work: any, id: any) => (
+                                        <div key={work.company}  className="workCard pb-2">
+                                                <BlurFade
+                                                key={work.company}
+                                                delay={BLUR_FADE_DELAY * 6 + id * 0.05}
+                                            >
+                                                <ResumeCard
+                                                    key={work.company}
+                                                    logoUrl={work.logoUrl}
+                                                    altText={work.company}
+                                                    title={work.company}
+                                                    subtitle={work.title}
+                                                    href={work.href}
+                                                    badges={work.badges}
+                                                    period={`${work.start} - ${work.end ?? "Present"}`}
+                                                    description={work.description}
+                                                />
+                                            </BlurFade>
+
+                                        </div>            
+
+                                    ))}
+                                </div>
+                            </section>
+
                         </>
 
 
