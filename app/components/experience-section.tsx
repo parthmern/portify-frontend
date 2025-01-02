@@ -49,8 +49,8 @@ export default function ExperienceSection() {
   const { data: session } : any = useSession();
 
   useEffect(() => {
-    fetchExperiences()
-  }, [])
+    session?.user?.id && fetchExperiences()
+  }, [session?.user?.id])
 
   const fetchExperiences = async () => {
     setIsLoading(true)
@@ -93,7 +93,10 @@ export default function ExperienceSection() {
         }
       ]
 
-      setExperiences(data) // Set the fake data to the state
+      const res = await axios.get(`http://127.0.0.1:8787/api/v1/works/${session?.user?.id}`);
+      console.log(res);
+
+      setExperiences(res?.data) // Set the fake data to the state
     } catch (err) {
       setError('Failed to load experiences. Please try again.')
     } finally {
@@ -183,16 +186,11 @@ export default function ExperienceSection() {
     setError(null)
 
     try {
-      //   const response = await fetch(`/api/experiences/${id}`, {
-      //     method: 'DELETE',
-      //   })
+      const res = await axios.delete(`http://127.0.0.1:8787/api/v1/works/${id}`);
+      console.log(res);
 
-      //   if (!response.ok) {
-      //     throw new Error('Failed to remove experience')
-      //   }
-
-      // Remove the experience from the state
-      setExperiences(prev => prev.filter(exp => exp.id !== id))
+      // // Remove the experience from the state
+      // setExperiences(prev => prev.filter(exp => exp.id !== id))
     } catch (err) {
       setError('Failed to remove experience. Please try again.')
     } finally {
@@ -287,13 +285,14 @@ export default function ExperienceSection() {
                 Company Website
               </a>
               <div className="mt-2">
-                <Image
+                {/* <Image
                   src={exp.logoUrl}
                   alt={`${exp.company} logo`}
                   width={100}
                   height={100}
                   className="object-contain"
-                />
+                /> */}
+                <img src={exp.logoUrl} width={"200px"} />
               </div>
               <Button
                 className="mt-4"
