@@ -20,6 +20,13 @@ h1, h2, h3, p {
   border: none; /* Remove other borders */
   border-bottom: 0.1px dashed #e5e7eb83 ;
 }
+input[type=file]::file-selector-button {
+  border: 0px solid #6c5ce7;
+  padding: .2em .4em;
+  border-radius: .2em;
+  background-color: #f7f7f7;
+  transition: 1s;
+}
 
 
 
