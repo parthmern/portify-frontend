@@ -10,7 +10,7 @@ interface EducationItem {
     name: string
     href: string
     degree: string
-    logo: string
+    logoUrl: string
     start: string
     end: string
     description: string
@@ -65,7 +65,7 @@ export function PreviousEducation() {
                 <Card key={index} className="relative">
                     <CardHeader>
                         <CardTitle className="flex items-center space-x-2">
-                            <img src={item.logo} alt={`${item.name} logo`} width={32} height={32} className="rounded-full" />
+                            <img src={item.logoUrl} alt={`${item.name} logo`} width={32} height={32} className="rounded-full" />
                             <span>{item.name}</span>
                         </CardTitle>
                         {/* Remove button */}
