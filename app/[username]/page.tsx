@@ -23,6 +23,7 @@ export default function Page() {
     const [PROFILE, SETPROFILE] = useState<any>(null);
     const [SKILLS, SETSKILLS] = useState<any>(null);
     const [WORK, SETWORK] = useState<any>([]);
+    const [EDUCATION, SETEDUCATION] = useState<any>([]);
 
     useEffect(() => {
         async function fetchUsernameDetails() {
@@ -31,6 +32,7 @@ export default function Page() {
             SETPROFILE(DATA?.data?.fetchedDetails?.profile);
             SETSKILLS(DATA?.data?.fetchedDetails?.skills);
             SETWORK((prevWorks: any) => [...prevWorks, ...(DATA?.data?.fetchedDetails?.works || [])]);
+            SETEDUCATION((prevWorks: any) => [...prevWorks, ...(DATA?.data?.fetchedDetails?.education || [])])
         }
         fetchUsernameDetails();
     }, [username])
@@ -125,6 +127,37 @@ export default function Page() {
                                                     badges={work.badges}
                                                     period={`${work.start} - ${work.end ?? "Present"}`}
                                                     description={work.description}
+                                                />
+                                            </BlurFade>
+
+                                        </div>            
+
+                                    ))}
+                                </div>
+                            </section>
+
+                            <section id="education">
+                                <div className="flex min-h-0 flex-col bg-[#08090a] gap-y-3">
+                                    <BlurFade delay={BLUR_FADE_DELAY * 5}>
+                                        <h2 className="text-xl font-bold">Education </h2>
+                                    </BlurFade>
+                                    
+                                    {EDUCATION.map((edu: any, id: any) => (
+                                        <div key={edu.name}  className="workCard pb-2">
+                                                <BlurFade
+                                                key={edu.name}
+                                                delay={BLUR_FADE_DELAY * 6 + id * 0.05}
+                                            >
+                                                <ResumeCard
+                                                    key={edu.name}
+                                                    logoUrl={edu.logoUrl}
+                                                    altText={edu.name}
+                                                    title={edu.name}
+                                                    subtitle={edu.degree}
+                                                    href={edu.href}
+                                                    badges={edu.badges ? edu.badges : ""}
+                                                    period={`${edu.start} - ${edu.end ?? "Present"}`}
+                                                    description={edu.description}
                                                 />
                                             </BlurFade>
 
