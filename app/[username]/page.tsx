@@ -11,6 +11,8 @@ import Markdown from "react-markdown";
 import { Badge } from '@/components/ui/badge'
 import { GithubContributions } from '../components/github-calendar'
 import { ResumeCard } from '../components/resume-card'
+import { ProjectCard } from '../components/project-card'
+import { Icons } from '../components/icons'
 
 
 export default function Page() {
@@ -24,6 +26,7 @@ export default function Page() {
     const [SKILLS, SETSKILLS] = useState<any>(null);
     const [WORK, SETWORK] = useState<any>([]);
     const [EDUCATION, SETEDUCATION] = useState<any>([]);
+    const [PROJECT, SETPROJECT] = useState<any>([]);
 
     useEffect(() => {
         async function fetchUsernameDetails() {
@@ -33,6 +36,7 @@ export default function Page() {
             SETSKILLS(DATA?.data?.fetchedDetails?.skills);
             SETWORK((prevWorks: any) => [...prevWorks, ...(DATA?.data?.fetchedDetails?.works || [])]);
             SETEDUCATION((prevWorks: any) => [...prevWorks, ...(DATA?.data?.fetchedDetails?.education || [])])
+            SETPROJECT((prevproj: any) => [...prevproj, ...(DATA?.data?.fetchedDetails?.project || [])])
         }
         fetchUsernameDetails();
     }, [username])
@@ -110,10 +114,10 @@ export default function Page() {
                                     <BlurFade delay={BLUR_FADE_DELAY * 5}>
                                         <h2 className="text-xl font-bold">Work Experience</h2>
                                     </BlurFade>
-                                    
+
                                     {WORK.map((work: any, id: any) => (
-                                        <div key={work.company}  className="workCard pb-2">
-                                                <BlurFade
+                                        <div key={work.company} className="workCard pb-2">
+                                            <BlurFade
                                                 key={work.company}
                                                 delay={BLUR_FADE_DELAY * 6 + id * 0.05}
                                             >
@@ -130,7 +134,7 @@ export default function Page() {
                                                 />
                                             </BlurFade>
 
-                                        </div>            
+                                        </div>
 
                                     ))}
                                 </div>
@@ -141,10 +145,10 @@ export default function Page() {
                                     <BlurFade delay={BLUR_FADE_DELAY * 5}>
                                         <h2 className="text-xl font-bold">Education </h2>
                                     </BlurFade>
-                                    
+
                                     {EDUCATION.map((edu: any, id: any) => (
-                                        <div key={edu.name}  className="workCard pb-2">
-                                                <BlurFade
+                                        <div key={edu.name} className="workCard pb-2">
+                                            <BlurFade
                                                 key={edu.name}
                                                 delay={BLUR_FADE_DELAY * 6 + id * 0.05}
                                             >
@@ -161,9 +165,71 @@ export default function Page() {
                                                 />
                                             </BlurFade>
 
-                                        </div>            
+                                        </div>
 
                                     ))}
+                                </div>
+                            </section>
+
+                            <section id="projects">
+                                <div className="space-y-12 w-full py-12">
+                                    <BlurFade delay={BLUR_FADE_DELAY * 11}>
+                                        <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                                            <div className="space-y-2">
+                                                <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
+                                                    My Projects
+                                                </div>
+                                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                                                    Check out my latest work
+                                                </h2>
+                                                <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                                                    I&apos;ve worked on a variety of projects, from simple
+                                                    websites to complex web applications. Here are a few of my
+                                                    favorites.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </BlurFade>
+                                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
+                                        {PROJECT.map((project:any, id:any) => {
+                                            
+                                            const linkArr = [
+                                                {
+                                                    type: "Website",
+                                                    href: project.liveLink,
+                                                    icon: <Icons.globe className="size-3" />,
+                                                },
+                                                {
+                                                    type: "Source",
+                                                    href: project.githubRepoLink,
+                                                    icon: <Icons.github className="size-3" />,
+                                                },
+                                                project.otherLink ? {
+                                                    type: "Other",
+                                                    href: project.otherLink,
+                                                    icon: <Icons.more className="size-3" />,
+                                                } : null
+                                            ].filter(link => link !== null);
+                                            
+                                            return (
+                                            <BlurFade
+                                                key={project.title + id}
+                                                delay={BLUR_FADE_DELAY * 12 + id * 0.05}
+                                            >
+                                                <ProjectCard
+                                                    href={project.href}
+                                                    key={project.title}
+                                                    title={project.title}
+                                                    description={project.description}
+                                                    dates={project.dates}
+                                                    tags={project.technologies}
+                                                    image={project.image}
+                                                    video={project.featuredVideo}
+                                                    links={linkArr}
+                                                />
+                                            </BlurFade>
+                                        )})}
+                                    </div>
                                 </div>
                             </section>
 

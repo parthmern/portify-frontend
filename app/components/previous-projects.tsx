@@ -58,7 +58,7 @@ export function PreviousProjects() {
         console.log(error);
       }
 
-    
+
   }
 
   useEffect(() => {
