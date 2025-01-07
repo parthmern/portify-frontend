@@ -69,7 +69,7 @@ export function PreviousProjects() {
 
   return (
     <div className="space-y-6 text-black">
-      <h2 className="text-2xl font-bold">Previous Projects</h2>
+      <h2 className="text-2xl text-white mt-9 font-bold">Previous Projects</h2>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {prevProjects.map((project: Project) => (
           <Card key={project.id}>
