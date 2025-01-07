@@ -39,7 +39,7 @@ export function ProjectCard({
   video,
   links,
   className,
-}: Props) {
+}: any) {
   return (
     <Card
       className={
@@ -85,7 +85,7 @@ export function ProjectCard({
       <CardContent className="mt-auto pb-4 flex flex-col px-2">
         {tags && tags.length > 0 && (
           <div className="mt-2 flex flex-wrap gap-1">
-            {tags?.map((tag) => (
+            {tags?.map((tag : any) => (
               <Badge
                 className="px-1 py-0 text-[10px]"
                 variant="secondary"
@@ -100,14 +100,26 @@ export function ProjectCard({
       <CardFooter className="px-2  pb-2">
         {links && links.length > 0 && (
           <div className="flex flex-row flex-wrap items-start gap-1">
-            {links?.map((link, idx) => (
-              <Link href={link?.href} key={idx} target="_blank">
-                <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px]">
-                  {link.icon}
-                  {link.type}
-                </Badge>
-              </Link>
-            ))}
+            {links?.map((link:any, idx:any) => {
+
+              if(link?.href == null || link?.href == ""){
+                return(
+                  <span key={idx}></span>
+                )
+              }
+
+              return(
+                (
+                  <Link href={link?.href || "#"} key={idx} target="_blank">
+                    <Badge key={idx} className="flex gap-2 px-2 py-1 text-[10px]">
+                      {link.icon}
+                      {link.type}
+                    </Badge>
+                  </Link>
+                )
+              )
+
+            })}
           </div>
         )}
       </CardFooter>
