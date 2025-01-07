@@ -13,6 +13,19 @@ import { GithubContributions } from '../components/github-calendar'
 import { ResumeCard } from '../components/resume-card'
 import { ProjectCard } from '../components/project-card'
 import { Icons } from '../components/icons'
+import Link from "next/link";
+import { Github, Linkedin, Twitter, Code, Mail, Icon } from "lucide-react";
+
+
+const IconsNew = {
+    github: "Icons.github",
+    linkedin: "Icons.linkedin",
+    x: "Icons.x",
+    leetcode: "Icons.leetcode",
+    email: "Icons.email",
+};
+
+
 
 
 export default function Page() {
@@ -27,6 +40,7 @@ export default function Page() {
     const [WORK, SETWORK] = useState<any>([]);
     const [EDUCATION, SETEDUCATION] = useState<any>([]);
     const [PROJECT, SETPROJECT] = useState<any>([]);
+    const [CONNECT, SETCONNECT] = useState<any>([]);
 
     useEffect(() => {
         async function fetchUsernameDetails() {
@@ -37,6 +51,11 @@ export default function Page() {
             SETWORK((prevWorks: any) => [...prevWorks, ...(DATA?.data?.fetchedDetails?.works || [])]);
             SETEDUCATION((prevWorks: any) => [...prevWorks, ...(DATA?.data?.fetchedDetails?.education || [])])
             SETPROJECT((prevproj: any) => [...prevproj, ...(DATA?.data?.fetchedDetails?.project || [])])
+            SETCONNECT(DATA?.data?.fetchedDetails?.contact || []);
+
+
+
+
         }
         fetchUsernameDetails();
     }, [username])
@@ -191,8 +210,8 @@ export default function Page() {
                                         </div>
                                     </BlurFade>
                                     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
-                                        {PROJECT.map((project:any, id:any) => {
-                                            
+                                        {PROJECT.map((project: any, id: any) => {
+
                                             const linkArr = [
                                                 {
                                                     type: "Website",
@@ -210,28 +229,112 @@ export default function Page() {
                                                     icon: <Icons.more className="size-3" />,
                                                 } : null
                                             ].filter(link => link !== null);
-                                            
+
                                             //console.log(project.href);
                                             return (
-                                            <BlurFade
-                                                key={project.title + id}
-                                                delay={BLUR_FADE_DELAY * 12 + id * 0.05}
-                                            >
-                                                <ProjectCard
-                                                    href={project?.href == null || project.href == "" ? "" : project.href}
-                                                    key={project.title || ""}
-                                                    title={project.title || ""}
-                                                    description={project.description || ""}
-                                                    dates={project.dates|| ""}
-                                                    tags={project.technologies|| []}
-                                                    image={project.image|| ""}
-                                                    video={project.featuredVideo|| ""}
-                                                    links={linkArr}
-                                                />
-                                            </BlurFade>
-                                        )})}
+                                                <BlurFade
+                                                    key={project.title + id}
+                                                    delay={BLUR_FADE_DELAY * 12 + id * 0.05}
+                                                >
+                                                    <ProjectCard
+                                                        href={project?.href == null || project.href == "" ? "" : project.href}
+                                                        key={project.title || ""}
+                                                        title={project.title || ""}
+                                                        description={project.description || ""}
+                                                        dates={project.dates || ""}
+                                                        tags={project.technologies || []}
+                                                        image={project.image || ""}
+                                                        video={project.featuredVideo || ""}
+                                                        links={linkArr}
+                                                    />
+                                                </BlurFade>
+                                            )
+                                        })}
                                     </div>
                                 </div>
+                            </section>
+
+                            <section id="connect">
+
+
+                                <BlurFade delay={BLUR_FADE_DELAY * 4.5}>
+                                    <div className="space-y-4">
+                                        <h2 className="text-xl font-bold">Let's Connect 🤝🏻</h2>
+                                        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
+                                            <div className="contact-links flex gap-x-10">
+                                                {CONNECT.githubUrl && (
+                                                    <div className='p-3 rounded transition-all duration-200 hover:bg-accent/10'>
+                                                        <a
+                                                            key="github"
+                                                            href={CONNECT.githubUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            aria-label="GitHub"
+                                                            className="icon-link"
+                                                        >
+                                                            <Icons.github className='w-[24px] h-[24px]' />
+
+
+                                                        </a>
+                                                    </div>
+                                                )}
+                                                {CONNECT.linkedinUrl && (
+                                                    <div className='p-3 rounded transition-all duration-200 hover:bg-accent/10'><a
+                                                        key="linkedin"
+                                                        href={CONNECT.linkedinUrl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        aria-label="LinkedIn"
+                                                        className="icon-link"
+                                                    >
+                                                        <Icons.linkedin className='w-[24px] h-[24px]' />
+                                                    </a></div>
+
+                                                )}
+                                                {CONNECT.twitterUrl && (
+                                                    <div className='p-3 rounded transition-all duration-200 hover:bg-accent/10'>
+                                                        <a
+                                                            key="twitter"
+                                                            href={CONNECT.twitterUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            aria-label="Twitter"
+                                                            className="icon-link"
+                                                        >
+                                                            <Icons.x className='w-[24px] h-[24px]' />
+                                                        </a>
+                                                    </div>
+                                                )}
+                                                {CONNECT.leetcodeUrl && (
+                                                    <div className='p-3 rounded transition-all duration-200 hover:bg-accent/10'>
+                                                        <a
+                                                            key="leetcode"
+                                                            href={CONNECT.leetcodeUrl}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            aria-label="LeetCode"
+                                                            className="icon-link"
+                                                        >
+                                                            <Icons.leetcode className='w-[24px] h-[24px]' />
+                                                        </a>
+                                                    </div>
+                                                )}
+                                                {CONNECT.emailId && (
+                                                    <div className='p-3 rounded transition-all duration-200 hover:bg-accent/10'>
+                                                        <a
+                                                            key="email"
+                                                            href={`mailto:${CONNECT.emailId}`}
+                                                            aria-label="Email"
+                                                            className="icon-link"
+                                                        >
+                                                            <Icons.email className='w-[24px] h-[24px]' />
+                                                        </a>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </BlurFade>
                             </section>
 
                         </>

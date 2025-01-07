@@ -5,30 +5,40 @@ export type IconProps = React.HTMLAttributes<SVGElement>;
 export const Icons = {
   globe: (props: IconProps) => <GlobeIcon {...props} />,
   email: (props: IconProps) => <MailIcon {...props} />,
+  leetcode: (props: IconProps) => (
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
+  <title>LeetCode icon</title>
+  <path
+    fill="currentColor"
+    d="M16.102 17.93l-2.697 2.607c-.466.467-1.111.662-1.823.662s-1.357-.195-1.824-.662l-4.332-4.363c-.467-.467-.702-1.15-.702-1.863s.235-1.357.702-1.824l4.319-4.38c.467-.467 1.125-.645 1.837-.645s1.357.195 1.823.662l2.697 2.606c.514.515 1.365.497 1.9-.038.535-.536.553-1.387.039-1.901l-2.609-2.636a5.055 5.055 0 0 0-2.445-1.337l2.467-2.503c.516-.514.498-1.366-.037-1.901-.535-.535-1.387-.552-1.902-.038l-10.1 10.101c-.981.982-1.494 2.337-1.494 3.835 0 1.498.513 2.895 1.494 3.875l4.347 4.361c.981.979 2.337 1.452 3.834 1.452s2.853-.512 3.835-1.494l2.609-2.637c.514-.514.496-1.365-.039-1.9s-1.386-.553-1.899-.039zM20.811 13.01H10.666c-.702 0-1.27.604-1.27 1.346s.568 1.346 1.27 1.346h10.145c.701 0 1.27-.604 1.27-1.346s-.569-1.346-1.27-1.346z"
+  />
+</svg>
+
+  ),
   more: (props: IconProps) => (
     <svg
-    enableBackground="new 0 0 500 500"
-    id="Layer_1"
-    version="1.1"
-    viewBox="0 0 500 500"
-    xmlSpace="preserve"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlnsXlink="http://www.w3.org/1999/xlink"
-    width="100px"  // Adjusted width
-    height="100px" // Adjusted height
-    {...props}
-  >
-    <circle cx="249.9" cy="250.4" r="204.7" stroke="#000000" strokeMiterlimit="10" />
-    <circle cx="249.9" cy="247.4" fill="#FFFFFF" r="181.8" stroke="#000000" strokeMiterlimit="10" />
-    <circle cx="148.5" cy="247.5" r="31.5" />
-    <circle cx="250.5" cy="250.5" r="31.5" />
-    <circle cx="351.5" cy="249.5" r="31.5" />
-  </svg>
+      enableBackground="new 0 0 500 500"
+      id="Layer_1"
+      version="1.1"
+      viewBox="0 0 500 500"
+      xmlSpace="preserve"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      width="100px"  // Adjusted width
+      height="100px" // Adjusted height
+      {...props}
+    >
+      <circle cx="249.9" cy="250.4" r="204.7" stroke="#000000" strokeMiterlimit="10" />
+      <circle cx="249.9" cy="247.4" fill="#FFFFFF" r="181.8" stroke="#000000" strokeMiterlimit="10" />
+      <circle cx="148.5" cy="247.5" r="31.5" />
+      <circle cx="250.5" cy="250.5" r="31.5" />
+      <circle cx="351.5" cy="249.5" r="31.5" />
+    </svg>
 
   ),
   linkedin: (props: IconProps) => (
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <title>LinkedIn</title>
+      <p>LinkedIn</p>
       <path
         fill="currentColor"
         d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
