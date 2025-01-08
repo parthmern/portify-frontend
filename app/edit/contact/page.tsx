@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
+import { EditNavbar } from '@/app/components/EditNavbar'
 
 // Dummy initial data
 // const initialProfileData = {
@@ -37,7 +38,7 @@ export default function ProfileUpdatePage() {
 
     async function fetchPrevData() {
         try {
-            const res:any = await axios.get(`http://127.0.0.1:8787/api/v1/contacts/${userId}`);
+            const res:any = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/contacts/${userId}`);
             console.log(res);
             setProfileData({
                 emailId: res?.data?.emailId,
@@ -74,7 +75,7 @@ export default function ProfileUpdatePage() {
             console.log('Updated Profile Data:', profileData, userId);
 
             try {
-                const res = await axios.post(`http://127.0.0.1:8787/api/v1/contacts/contact`, { profileData, userId });
+                const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/contacts/contact`, { profileData, userId });
                 console.log(res);
             }
             catch (error: any) {
@@ -91,6 +92,7 @@ export default function ProfileUpdatePage() {
 
     return (
         <div className="container mt-10 mx-auto p-4">
+            <EditNavbar/>
             <Card className="w-full max-w-2xl mx-auto">
                 <CardHeader>
                     <CardTitle>Update Profile</CardTitle>

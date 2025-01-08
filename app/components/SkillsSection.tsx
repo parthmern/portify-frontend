@@ -18,7 +18,7 @@ export default function SkillsSection() {
 
     async function fetchSkills() {
         try {
-            const req = await axios.get(`http://127.0.0.1:8787/api/v1/skills/${userId}`);
+            const req = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/skills/${userId}`);
             console.log(req);
             const fetchedSkills = req?.data?.skills?.name || [];
             const fetchedGithubUsername = req?.data?.skills?.githubUsername || 'null';
@@ -60,7 +60,7 @@ export default function SkillsSection() {
 
         try {
             const res = await axios.post(
-                "http://127.0.0.1:8787/api/v1/skills",
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/skills`,
                 { skills, githubUsername, userId },
                 { headers: { 'Content-Type': 'application/json' } }
             );

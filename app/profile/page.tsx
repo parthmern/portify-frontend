@@ -8,6 +8,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
 import { AlertCircle, CheckCircle2 } from 'lucide-react'
+import ProfileCard from '../components/profile-card'
+import { EditNavbar } from '../components/EditNavbar'
 
 export default function UsernameSettingPage() {
   const { data: session, status } = useSession()
@@ -23,7 +25,7 @@ export default function UsernameSettingPage() {
     if (userId) {
       const fetchUsername = async () => {
         try {
-          const res = await axios.get(`http://127.0.0.1:8787/api/v1/user/username/${userId}`)
+          const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/username/${userId}`)
           console.log("ress=>", res);
           setUsername(res.data.username || '') // Ensure the username is not undefined
         } catch (error) {
@@ -45,7 +47,7 @@ export default function UsernameSettingPage() {
       
      
       // Update username via API
-      const result = await axios.put(`http://127.0.0.1:8787/api/v1/user/username`, {
+      const result = await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/username`, {
         username,
         userId
       })
@@ -71,7 +73,11 @@ export default function UsernameSettingPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <>
+    <EditNavbar />
+
+    <div className="flex gap-x-5 items-center justify-center min-h-screen text-white bg-[#08090a]">
+      
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Set Your Username</CardTitle>
@@ -90,6 +96,7 @@ export default function UsernameSettingPage() {
                   onChange={handleUsernameChange}
                   required
                 />
+                <div>{username ? `Your portfolio is live on https://localhost:3000/${username}` : "not live yet set username to make it live" } {}</div>
               </div>
               {state.error && (
                 <div className="flex items-center text-red-500 space-x-2">
@@ -112,6 +119,12 @@ export default function UsernameSettingPage() {
           </CardFooter>
         </form>
       </Card>
+
+      <div>
+        <ProfileCard />
+      </div>
     </div>
+    </>
+    
   )
 }

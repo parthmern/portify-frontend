@@ -26,7 +26,7 @@ export function PreviousEducation() {
         console.log("=============================================================================", userId);
         if (!userId) return [];
         try {
-            const res = await axios.get(`http://127.0.0.1:8787/api/v1/education/${userId}`);
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/education/${userId}`);
             console.log(res.data);
             setPreviousEducation(res.data);
         } catch (error) {
@@ -48,7 +48,7 @@ export function PreviousEducation() {
     const handleRemove = async (id: string) => {
         console.log("Removing item with ID:", id);
         try {
-            const res = await axios.delete(`http://127.0.0.1:8787/api/v1/education/${id}`);
+            const res = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/education/${id}`);
             console.log(res);
                
                 fetchEducation();

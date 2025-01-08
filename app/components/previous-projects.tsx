@@ -37,7 +37,7 @@ export function PreviousProjects() {
 
   async function fetchPreviousProjects() {
     try {
-      const res = await axios.get(`http://127.0.0.1:8787/api/v1/projects/${userId}`);
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/projects/${userId}`);
       setPrevProjects(res?.data);
     } catch (error) {
       console.log("Error fetching projects:", error);
@@ -49,7 +49,7 @@ export function PreviousProjects() {
 
       try{
         
-      const res = await axios.delete(`http://127.0.0.1:8787/api/v1/projects/${projectId}`);
+      const res = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/projects/${projectId}`);
       console.log(res);
       setPrevProjects((prev:any) => prev.filter((project:any) => project.id !== projectId));
       console.log(`Project with ID ${projectId} removed successfully.`);

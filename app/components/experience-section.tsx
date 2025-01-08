@@ -93,7 +93,7 @@ export default function ExperienceSection() {
         }
       ]
 
-      const res = await axios.get(`http://127.0.0.1:8787/api/v1/works/${session?.user?.id}`);
+      const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/works/${session?.user?.id}`);
       console.log(res);
 
       setExperiences(res?.data) // Set the fake data to the state
@@ -148,7 +148,7 @@ export default function ExperienceSection() {
 
 
     try {
-      const response = await axios.post("http://127.0.0.1:8787/api/v1/works", formData, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/works`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -188,7 +188,7 @@ export default function ExperienceSection() {
     setError(null)
 
     try {
-      const res = await axios.delete(`http://127.0.0.1:8787/api/v1/works/${id}`);
+      const res = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/works/${id}`);
       console.log(res);
 
       fetchExperiences();

@@ -17,7 +17,7 @@ const NEXT_AUTH = {
 
         console.log("putting req on db");
         try {
-          const res = await axios.post("http://127.0.0.1:8787/api/v1/user/login", {
+          const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/login`, {
             name: profile?.given_name,
             email: profile?.email,
             id: profile?.sub,

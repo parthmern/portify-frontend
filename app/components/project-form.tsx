@@ -81,7 +81,7 @@ export function ProjectForm() {
         try {
             // Send FormData
             const res = await axios.post(
-                "http://127.0.0.1:8787/api/v1/projects",
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/projects`,
                 formDataToSend,
                 { headers: { 'Content-Type': 'multipart/form-data' } }
             );

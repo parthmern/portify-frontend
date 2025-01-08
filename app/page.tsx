@@ -12,11 +12,31 @@ import BlurIn from "./components/blur-in";
 import { RainbowButton } from "./components/rainbow-button";
 import HeroVideoDialog from "./components/hero-video-dialog";
 import Footer from "./components/Footer";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 const ThemeComponent = dynamic(() => import("./components/theme-switch"), {
   ssr: false,
 });
 
 export default function Home() {
+
+  const router = useRouter();
+
+  const { data: session } = useSession(); 
+
+
+  const handleClick = () => {
+    console.log(session?.user?.email);
+    if (!session?.user?.email) {
+      router.push('/login');
+    } else {
+      router.push('/profile');
+    }
+  };
+
+
+ 
   return (
     <div className="dark:text-black overflow-x-hidden  dark:bg-white text-white bg-[#08090a]  h-screen">
       {/* <ThemeComponent /> */}
@@ -37,7 +57,11 @@ export default function Home() {
             </p>
           </div>
           <div className="mx-auto flex flex-col mt-14 items-center justify-center">
-            <RainbowButton className="" children="Try Now" />
+            <RainbowButton onClick={handleClick} children="Try Now" />
+          </div>
+          <div className="mx-auto flex flex-col mt-14 items-center justify-center">
+            <p>Right now in Developing phase ...</p>
+            {/* <p>Facing issue? connect with me</p> */}
           </div>
         </div>
       </div>

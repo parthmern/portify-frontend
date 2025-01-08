@@ -13,8 +13,7 @@ import { GithubContributions } from '../components/github-calendar'
 import { ResumeCard } from '../components/resume-card'
 import { ProjectCard } from '../components/project-card'
 import { Icons } from '../components/icons'
-import Link from "next/link";
-import { Github, Linkedin, Twitter, Code, Mail, Icon } from "lucide-react";
+
 
 
 const IconsNew = {
@@ -44,7 +43,7 @@ export default function Page() {
 
     useEffect(() => {
         async function fetchUsernameDetails() {
-            let DATA = await axios.get(`http://127.0.0.1:8787/api/v1/user/userid/${username}`);
+            let DATA = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/userid/${username}`);
             console.log(DATA);
             SETPROFILE(DATA?.data?.fetchedDetails?.profile);
             SETSKILLS(DATA?.data?.fetchedDetails?.skills);

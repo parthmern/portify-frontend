@@ -34,7 +34,7 @@ export function ProfileForm() {
           const user : any = session?.user;
           const userId = user?.id;
           if (!userId) return;
-          const res = await axios.get(`http://127.0.0.1:8787/api/v1/profile/${userId}`);
+          const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/profile/${userId}`);
           const profile = res.data?.profileData;
           if (profile) {
             setName(profile.name || "");
@@ -84,7 +84,7 @@ export function ProfileForm() {
 
       formData.append("userData", userData);
 
-      const response = await axios.post("http://127.0.0.1:8787/api/v1/profile", formData, {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/profile`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -66,7 +66,7 @@ export function EducationForm() {
                 }
             })
 
-            const res = await axios.post("http://127.0.0.1:8787/api/v1/education", formDataToSend, {
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/education`, formDataToSend, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
