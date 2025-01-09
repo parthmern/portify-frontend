@@ -1,7 +1,9 @@
+
 import axios from "axios";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+
 
 const NEXT_AUTH = {
     providers: [
@@ -80,4 +82,4 @@ const handler = NextAuth(NEXT_AUTH);
 export const GET = handler;
 export const POST = handler;
 
-export const runtime = 'edge';
+
