@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import MDEditor from '@uiw/react-md-editor';
+import toast from "react-hot-toast";
 
 
 
@@ -30,6 +31,7 @@ export function ProfileForm() {
   useEffect(() => {
     if (status === "authenticated") {
       const fetchProfile = async () => {
+        const toastId = toast.loading("fetching previous details");
         try {
           const user : any = session?.user;
           const userId = user?.id;
@@ -42,8 +44,13 @@ export function ProfileForm() {
             setPhotoPreview(null); 
             setAboutSection(profile.aboutSection || "");
           }
+          toast.success("fetched");
         } catch (err) {
           console.error("Error fetching profile data:", err);
+          toast.error("failed fetching");
+        }
+        finally{
+          toast.dismiss(toastId);
         }
       };
       fetchProfile();
@@ -67,6 +74,8 @@ export function ProfileForm() {
     setIsPending(true);
     setMessage(null);
     setError(null);
+
+    const toastId = toast.loading("submitting...");
 
     try {
       const formData = new FormData();
@@ -92,11 +101,14 @@ export function ProfileForm() {
 
       setMessage("Profile submitted successfully!");
       console.log("Response:", response.data);
+      toast.success("submitted");
     } catch (err: any) {
       setError(err.message || "Failed to submit the profile.");
       console.error("Error submitting profile:", err);
+      toast.error("error not submitted");
     } finally {
       setIsPending(false);
+      toast.dismiss(toastId);
     }
   };
 

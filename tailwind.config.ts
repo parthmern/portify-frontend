@@ -14,10 +14,17 @@ export default {
 					css: {
 						'--tw-prose-links': theme('colors.blue.300'), // Set your custom link color
 						'--tw-prose-links-hover': theme('colors.blue.500'), // Optional hover color
+						'--tw-prose-bold' : theme('colors.blue.100'),
 						a: {
 							color: 'var(--tw-prose-links)',
 							'&:hover': {
 								color: 'var(--tw-prose-links-hover)',
+							},
+						},
+						strong : {
+							color: 'var(--tw-prose-bold)',
+							'&:hover': {
+								color: 'var(--tw-prose-links)',
 							},
 						},
 					},
