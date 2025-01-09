@@ -1,20 +1,18 @@
-'use client'
+"use client";
 
 // Import the useParams hook
-import { useParams } from 'next/navigation'
-import BlurFadeText from '../components/blur-fade-text'
-import { Avatar, AvatarImage, AvatarFallback } from '../components/avatar'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import BlurFade from '../components/blur-fade'
+import { useParams } from "next/navigation";
+import BlurFadeText from "../components/blur-fade-text";
+import { Avatar, AvatarImage, AvatarFallback } from "../components/avatar";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import BlurFade from "../components/blur-fade";
 import Markdown from "react-markdown";
-import { Badge } from '@/components/ui/badge'
-import { GithubContributions } from '../components/github-calendar'
-import { ResumeCard } from '../components/resume-card'
-import { ProjectCard } from '../components/project-card'
-import { Icons } from '../components/icons'
-
-
+import { Badge } from "@/components/ui/badge";
+import { GithubContributions } from "../components/github-calendar";
+import { ResumeCard } from "../components/resume-card";
+import { ProjectCard } from "../components/project-card";
+import { Icons } from "../components/icons";
 
 const IconsNew = {
     github: "Icons.github",
@@ -24,15 +22,11 @@ const IconsNew = {
     email: "Icons.email",
 };
 
-
-
-
 export default function Page() {
     const BLUR_FADE_DELAY = 0.04;
 
-
-    const params = useParams()
-    const username = params.username as string
+    const params = useParams();
+    const username = params.username as string;
 
     const [PROFILE, SETPROFILE] = useState<any>(null);
     const [SKILLS, SETSKILLS] = useState<any>(null);
@@ -43,28 +37,38 @@ export default function Page() {
 
     useEffect(() => {
         async function fetchUsernameDetails() {
-            let DATA = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/userid/${username}`);
+            let DATA = await axios.get(
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/userid/${username}`
+            );
             console.log(DATA);
             SETPROFILE(DATA?.data?.fetchedDetails?.profile);
             SETSKILLS(DATA?.data?.fetchedDetails?.skills);
-            SETWORK((prevWorks: any) => [...prevWorks, ...(DATA?.data?.fetchedDetails?.works || [])]);
-            SETEDUCATION((prevWorks: any) => [...prevWorks, ...(DATA?.data?.fetchedDetails?.education || [])])
-            SETPROJECT((prevproj: any) => [...prevproj, ...(DATA?.data?.fetchedDetails?.project || [])])
+            SETWORK((prevWorks: any) => [
+                ...prevWorks,
+                ...(DATA?.data?.fetchedDetails?.works || []),
+            ]);
+            SETEDUCATION((prevWorks: any) => [
+                ...prevWorks,
+                ...(DATA?.data?.fetchedDetails?.education || []),
+            ]);
+            SETPROJECT((prevproj: any) => [
+                ...prevproj,
+                ...(DATA?.data?.fetchedDetails?.project || []),
+            ]);
             SETCONNECT(DATA?.data?.fetchedDetails?.contact || []);
-
-
-
-
         }
         fetchUsernameDetails();
-    }, [username])
+    }, [username]);
 
     return (
-        <div id='mainPage' className='min-h-screen text-white  antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6  bg-[#08090a]'>
+        <div
+            id="mainPage"
+            className="min-h-screen text-white  antialiased max-w-2xl mx-auto py-12 sm:py-24 px-6  bg-[#08090a]"
+        >
             <main className="flex  flex-col  space-y-10">
-                {
-                    PROFILE ? (
-                        <>
+                {PROFILE ? (
+                    <>
+                        {PROFILE && (
                             <section id="hero">
                                 <div className="mx-auto w-full max-w-2xl space-y-8">
                                     <div className="gap-2 flex justify-between">
@@ -73,7 +77,7 @@ export default function Page() {
                                                 delay={0.04}
                                                 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none"
                                                 yOffset={8}
-                                                text={`Hi, I'm ${PROFILE.name.split(" ")[0]} 👋`}
+                                                text={`Hi, I'm ${PROFILE?.name.split(" ")[0]} 👋`}
                                             />
                                             <BlurFadeText
                                                 className="max-w-[600px] md:text-xl"
@@ -83,24 +87,29 @@ export default function Page() {
                                         </div>
                                         <BlurFade delay={0.04}>
                                             <Avatar className="size-28 border">
-                                                <AvatarImage alt={PROFILE.name} src={PROFILE.img} />
-                                                <AvatarFallback>{PROFILE.initials || ""}</AvatarFallback>
+                                                <AvatarImage alt={PROFILE?.name} src={PROFILE?.img} />
+                                                <AvatarFallback>
+                                                    {PROFILE?.initials || ""}
+                                                </AvatarFallback>
                                             </Avatar>
                                         </BlurFade>
                                     </div>
-
                                 </div>
                             </section>
+                        )}
+                        {PROFILE && (
                             <section id="about">
                                 <BlurFade delay={0.04}>
                                     <h2 className="text-xl font-bold">About</h2>
                                 </BlurFade>
                                 <BlurFade delay={0.04}>
                                     <Markdown className="prose max-w-full text-pretty font-sans text-sm text-white/80 dark:prose">
-                                        {PROFILE.aboutSection}
+                                        {PROFILE?.aboutSection}
                                     </Markdown>
                                 </BlurFade>
                             </section>
+                        )}
+                        {SKILLS && (
                             <section id="skills">
                                 <div className="flex min-h-0 flex-col gap-y-3">
                                     <BlurFade delay={0.04 * 9}>
@@ -108,244 +117,263 @@ export default function Page() {
                                     </BlurFade>
                                     <div className="flex  flex-wrap gap-1">
                                         {SKILLS?.name?.map((skill: any, id: number) => {
-
                                             return (
                                                 <BlurFade key={skill} delay={0.04 * 10 + id * 0.05}>
-                                                    <Badge className='bg-white text-black hover:bg-white/70' key={skill}>{skill}</Badge>
+                                                    <Badge
+                                                        className="bg-white text-black hover:bg-white/70"
+                                                        key={skill}
+                                                    >
+                                                        {skill}
+                                                    </Badge>
                                                 </BlurFade>
-                                            )
+                                            );
                                         })}
                                     </div>
                                 </div>
                             </section>
-                            <section id="contributions">
-                                <BlurFade delay={0.04 * 10}>
-                                    <h2 className="text-xl mb-4 font-bold">GitHub Contributions</h2>
-                                    <div id='gtc' className='bg-[#000000] rounded-xl'>
-                                        <GithubContributions username={SKILLS?.githubUsername} />
-                                    </div>
-                                </BlurFade>
-                            </section>
-
-                            <section id="work">
-                                <div className="flex min-h-0 flex-col bg-[#08090a] gap-y-3">
-                                    <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                                        <h2 className="text-xl font-bold">Work Experience</h2>
-                                    </BlurFade>
-
-                                    {WORK.map((work: any, id: any) => (
-                                        <div key={work.company} className="workCard pb-2">
-                                            <BlurFade
-                                                key={work.company}
-                                                delay={BLUR_FADE_DELAY * 6 + id * 0.05}
-                                            >
-                                                <ResumeCard
-                                                    key={work.company}
-                                                    logoUrl={work.logoUrl}
-                                                    altText={work.company}
-                                                    title={work.company}
-                                                    subtitle={work.title}
-                                                    href={work.href}
-                                                    badges={work.badges}
-                                                    period={`${work.start} - ${work.end ?? "Present"}`}
-                                                    description={work.description}
-                                                />
-                                            </BlurFade>
-
-                                        </div>
-
-                                    ))}
-                                </div>
-                            </section>
-
-                            <section id="education">
-                                <div className="flex min-h-0 flex-col bg-[#08090a] gap-y-3">
-                                    <BlurFade delay={BLUR_FADE_DELAY * 5}>
-                                        <h2 className="text-xl font-bold">Education </h2>
-                                    </BlurFade>
-
-                                    {EDUCATION.map((edu: any, id: any) => (
-                                        <div key={edu.name} className="workCard pb-2">
-                                            <BlurFade
-                                                key={edu.name}
-                                                delay={BLUR_FADE_DELAY * 6 + id * 0.05}
-                                            >
-                                                <ResumeCard
-                                                    key={edu.name}
-                                                    logoUrl={edu.logoUrl}
-                                                    altText={edu.name}
-                                                    title={edu.name}
-                                                    subtitle={edu.degree}
-                                                    href={edu.href}
-                                                    badges={edu.badges ? edu.badges : ""}
-                                                    period={`${edu.start} - ${edu.end ?? "Present"}`}
-                                                    description={edu.description}
-                                                />
-                                            </BlurFade>
-
-                                        </div>
-
-                                    ))}
-                                </div>
-                            </section>
-
-                            <section id="projects">
-                                <div className="space-y-12 w-full py-12">
-                                    <BlurFade delay={BLUR_FADE_DELAY * 11}>
-                                        <div className="flex flex-col items-center justify-center space-y-4 text-center">
-                                            <div className="space-y-2">
-                                                <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                                                    My Projects
-                                                </div>
-                                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                                                    Check out my latest work
-                                                </h2>
-                                                <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                                    {/* I&apos;ve worked on a variety of projects, from simple
-                                                    websites to complex web applications. Here are a few of my
-                                                    favorites. */}
-                                                </p>
-                                            </div>
+                        )}
+                        {
+                            SKILLS && (
+                                <section id="contributions">
+                                    <BlurFade delay={0.04 * 10}>
+                                        <h2 className="text-xl mb-4 font-bold">GitHub Contributions</h2>
+                                        <div id="gtc" className="bg-[#000000] rounded-xl">
+                                            <GithubContributions username={SKILLS?.githubUsername} />
                                         </div>
                                     </BlurFade>
-                                    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
-                                        {PROJECT.map((project: any, id: any) => {
+                                </section>
+                            )
+                        }
 
-                                            const linkArr = [
-                                                {
-                                                    type: "Website",
-                                                    href: project.liveLink,
-                                                    icon: <Icons.globe className="size-3" />,
-                                                },
-                                                {
-                                                    type: "Source",
-                                                    href: project.githubRepoLink,
-                                                    icon: <Icons.github className="size-3" />,
-                                                },
-                                                project.otherLink ? {
-                                                    type: "Other",
-                                                    href: project.otherLink,
-                                                    icon: <Icons.more className="size-3" />,
-                                                } : null
-                                            ].filter(link => link !== null);
+                        {
+                            WORK && (
+                                <section id="work">
+                                    <div className="flex min-h-0 flex-col bg-[#08090a] gap-y-3">
+                                        <BlurFade delay={BLUR_FADE_DELAY * 5}>
+                                            <h2 className="text-xl font-bold">Work Experience</h2>
+                                        </BlurFade>
 
-                                            //console.log(project.href);
-                                            return (
+                                        {WORK?.map((work: any, id: any) => (
+                                            <div key={work?.company} className="workCard pb-2">
                                                 <BlurFade
-                                                    key={project.title + id}
-                                                    delay={BLUR_FADE_DELAY * 12 + id * 0.05}
+                                                    key={work?.company}
+                                                    delay={BLUR_FADE_DELAY * 6 + id * 0.05}
                                                 >
-                                                    <ProjectCard
-                                                        href={project?.href == null || project.href == "" ? "" : project.href}
-                                                        key={project.title || ""}
-                                                        title={project.title || ""}
-                                                        description={project.description || ""}
-                                                        dates={project.dates || ""}
-                                                        tags={project.technologies || []}
-                                                        image={project.image || ""}
-                                                        video={project.featuredVideo || ""}
-                                                        links={linkArr}
+                                                    <ResumeCard
+                                                        key={work?.company}
+                                                        logoUrl={work?.logoUrl}
+                                                        altText={work?.company}
+                                                        title={work?.company}
+                                                        subtitle={work?.title}
+                                                        href={work?.href}
+                                                        badges={work?.badges}
+                                                        period={`${work?.start} - ${work?.end ?? "Present"}`}
+                                                        description={work?.description}
                                                     />
                                                 </BlurFade>
-                                            )
-                                        })}
-                                    </div>
-                                </div>
-                            </section>
-
-                            <section id="connect">
-
-
-                                <BlurFade delay={BLUR_FADE_DELAY * 4.5}>
-                                    <div className="space-y-4">
-                                        <h2 className="text-xl font-bold">Let's Connect 🤝🏻</h2>
-                                        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
-                                            <div className="contact-links flex gap-x-10">
-                                                {CONNECT.githubUrl && (
-                                                    <div className='p-3 rounded transition-all duration-200 hover:bg-accent/10'>
-                                                        <a
-                                                            key="github"
-                                                            href={CONNECT.githubUrl}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            aria-label="GitHub"
-                                                            className="icon-link"
-                                                        >
-                                                            <Icons.github className='w-[24px] h-[24px]' />
-
-
-                                                        </a>
-                                                    </div>
-                                                )}
-                                                {CONNECT.linkedinUrl && (
-                                                    <div className='p-3 rounded transition-all duration-200 hover:bg-accent/10'><a
-                                                        key="linkedin"
-                                                        href={CONNECT.linkedinUrl}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        aria-label="LinkedIn"
-                                                        className="icon-link"
-                                                    >
-                                                        <Icons.linkedin className='w-[24px] h-[24px]' />
-                                                    </a></div>
-
-                                                )}
-                                                {CONNECT.twitterUrl && (
-                                                    <div className='p-3 rounded transition-all duration-200 hover:bg-accent/10'>
-                                                        <a
-                                                            key="twitter"
-                                                            href={CONNECT.twitterUrl}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            aria-label="Twitter"
-                                                            className="icon-link"
-                                                        >
-                                                            <Icons.x className='w-[24px] h-[24px]' />
-                                                        </a>
-                                                    </div>
-                                                )}
-                                                {CONNECT.leetcodeUrl && (
-                                                    <div className='p-3 rounded transition-all duration-200 hover:bg-accent/10'>
-                                                        <a
-                                                            key="leetcode"
-                                                            href={CONNECT.leetcodeUrl}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            aria-label="LeetCode"
-                                                            className="icon-link"
-                                                        >
-                                                            <Icons.leetcode className='w-[24px] h-[24px]' />
-                                                        </a>
-                                                    </div>
-                                                )}
-                                                {CONNECT.emailId && (
-                                                    <div className='p-3 rounded transition-all duration-200 hover:bg-accent/10'>
-                                                        <a
-                                                            key="email"
-                                                            href={`mailto:${CONNECT.emailId}`}
-                                                            aria-label="Email"
-                                                            className="icon-link"
-                                                        >
-                                                            <Icons.email className='w-[24px] h-[24px]' />
-                                                        </a>
-                                                    </div>
-                                                )}
                                             </div>
+                                        ))}
+                                    </div>
+                                </section>
+                            )
+                        }
+
+                        {
+                            EDUCATION && (
+                                <section id="education">
+                                    <div className="flex min-h-0 flex-col bg-[#08090a] gap-y-3">
+                                        <BlurFade delay={BLUR_FADE_DELAY * 5}>
+                                            <h2 className="text-xl font-bold">Education </h2>
+                                        </BlurFade>
+
+                                        {EDUCATION?.map((edu: any, id: any) => (
+                                            <div key={edu?.name} className="workCard pb-2">
+                                                <BlurFade
+                                                    key={edu?.name}
+                                                    delay={BLUR_FADE_DELAY * 6 + id * 0.05}
+                                                >
+                                                    <ResumeCard
+                                                        key={edu?.name}
+                                                        logoUrl={edu?.logoUrl}
+                                                        altText={edu?.name}
+                                                        title={edu?.name}
+                                                        subtitle={edu?.degree}
+                                                        href={edu?.href}
+                                                        badges={edu?.badges ? edu?.badges : ""}
+                                                        period={`${edu?.start} - ${edu?.end ?? "Present"}`}
+                                                        description={edu?.description}
+                                                    />
+                                                </BlurFade>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </section>
+                            )
+                        }
+
+                        {
+                            PROJECT && (
+                                <section id="projects">
+                                    <div className="space-y-12 w-full py-12">
+                                        <BlurFade delay={BLUR_FADE_DELAY * 11}>
+                                            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                                                <div className="space-y-2">
+                                                    <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
+                                                        My Projects
+                                                    </div>
+                                                    <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                                                        Check out my latest work
+                                                    </h2>
+                                                    <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                                                        {/* I&apos;ve worked on a variety of projects, from simple
+                                                    websites to complex web applications. Here are a few of my
+                                                    favorites. */}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </BlurFade>
+                                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
+                                            {PROJECT?.map((project: any, id: any) => {
+                                                const linkArr = [
+                                                    {
+                                                        type: "Website",
+                                                        href: project?.liveLink,
+                                                        icon: <Icons.globe className="size-3" />,
+                                                    },
+                                                    {
+                                                        type: "Source",
+                                                        href: project?.githubRepoLink,
+                                                        icon: <Icons.github className="size-3" />,
+                                                    },
+                                                    project.otherLink
+                                                        ? {
+                                                            type: "Other",
+                                                            href: project?.otherLink,
+                                                            icon: <Icons.more className="size-3" />,
+                                                        }
+                                                        : null,
+                                                ]?.filter((link) => link !== null);
+
+                                                //console.log(project.href);
+                                                return (
+                                                    <BlurFade
+                                                        key={project?.title + id}
+                                                        delay={BLUR_FADE_DELAY * 12 + id * 0.05}
+                                                    >
+                                                        <ProjectCard
+                                                            href={
+                                                                project?.href == null || project.href == ""
+                                                                    ? ""
+                                                                    : project.href
+                                                            }
+                                                            key={project?.title || ""}
+                                                            title={project?.title || ""}
+                                                            description={project?.description || ""}
+                                                            dates={project?.dates || ""}
+                                                            tags={project?.technologies || []}
+                                                            image={project?.image || ""}
+                                                            video={project?.featuredVideo || ""}
+                                                            links={linkArr}
+                                                        />
+                                                    </BlurFade>
+                                                );
+                                            })}
                                         </div>
                                     </div>
-                                </BlurFade>
-                            </section>
+                                </section>
+                            )
+                        }
 
-                        </>
-
-
-                    ) : (
-                        <div>laoding.</div>
-                    )
-                }
+                        {
+                            CONNECT && (
+                                <section className="max-w-full" id="connect">
+                                    <BlurFade delay={BLUR_FADE_DELAY * 4.5}>
+                                        <div className="space-y-4">
+                                            <h2 className="text-xl font-bold">Let's Connect 🤝🏻</h2>
+                                            <div className="flex">
+                                                <div className=" flex gap-x-6 md:gap-x-10">
+                                                    {CONNECT?.githubUrl && (
+                                                        <div className="p-1 md:p-3 rounded transition-all duration-200 hover:bg-accent/10">
+                                                            <a
+                                                                key="github"
+                                                                href={CONNECT?.githubUrl}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                aria-label="GitHub"
+                                                                className="icon-link "
+                                                            >
+                                                                <Icons.github className="w-[24px] h-[24px]" />
+                                                            </a>
+                                                        </div>
+                                                    )}
+                                                    {CONNECT?.linkedinUrl && (
+                                                        <div className="p-1 md:p-3 rounded transition-all duration-200 hover:bg-accent/10">
+                                                            <a
+                                                                key="linkedin"
+                                                                href={CONNECT?.linkedinUrl}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                aria-label="LinkedIn"
+                                                                className="icon-link"
+                                                            >
+                                                                <Icons.linkedin className="w-[24px] h-[24px]" />
+                                                            </a>
+                                                        </div>
+                                                    )}
+                                                    {CONNECT?.twitterUrl && (
+                                                        <div className="p-1 md:p-3  rounded transition-all duration-200 hover:bg-accent/10">
+                                                            <a
+                                                                key="twitter"
+                                                                href={CONNECT?.twitterUrl}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                aria-label="Twitter"
+                                                                className="icon-link"
+                                                            >
+                                                                <Icons.x className="w-[24px] h-[24px]" />
+                                                            </a>
+                                                        </div>
+                                                    )}
+                                                    {CONNECT?.leetcodeUrl && (
+                                                        <div className="p-1 md:p-3  rounded transition-all duration-200 hover:bg-accent/10">
+                                                            <a
+                                                                key="leetcode"
+                                                                href={CONNECT?.leetcodeUrl}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                aria-label="LeetCode"
+                                                                className="icon-link"
+                                                            >
+                                                                <Icons.leetcode className="w-[24px] h-[24px]" />
+                                                            </a>
+                                                        </div>
+                                                    )}
+                                                    {CONNECT?.emailId && (
+                                                        <div className="p-1 md:p-3  rounded transition-all duration-200 hover:bg-accent/10">
+                                                            <a
+                                                                key="email"
+                                                                href={`mailto:${CONNECT?.emailId}`}
+                                                                aria-label="Email"
+                                                                className="icon-link"
+                                                            >
+                                                                <Icons.email className="w-[24px] h-[24px]" />
+                                                            </a>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </BlurFade>
+                                </section>
+                            )
+                        }
+                    </>
+                ) : (
+                    <span className="loader"></span>
+                )}
             </main>
         </div>
-    )
+    );
 }
 
-export const runtime = 'edge';
+// export const runtime = 'edge';

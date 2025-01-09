@@ -8,6 +8,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
 import { EditNavbar } from '@/app/components/EditNavbar'
+import toast from 'react-hot-toast'
 
 // Dummy initial data
 // const initialProfileData = {
@@ -67,32 +68,35 @@ export default function ProfileUpdatePage() {
         e.preventDefault()
         setIsUpdating(true)
 
+        const toastId = toast.loading("Submitting..");
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 2000))
-
-
+            
             console.log('Updated Profile Data:', profileData, userId);
 
             try {
                 const res = await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/contacts/contact`, { profileData, userId });
                 console.log(res);
+                toast.success("submitted");
             }
             catch (error: any) {
                 console.log(error);
+                toast.error("Error in submitting");
+            }finally{
+                toast.dismiss(toastId);
             }
 
         } catch (error) {
             console.error('Error updating profile:', error)
-
+            toast.error("Error in submitting");
         } finally {
             setIsUpdating(false)
+            toast.dismiss(toastId);
         }
     }
 
     return (
-        <div className="container mt-10 mx-auto p-4">
-            <EditNavbar/>
+        <div className="container mx-auto p-4">
+            <EditNavbar className={"block w-full"}/>
             <Card className="w-full max-w-2xl mx-auto">
                 <CardHeader>
                     <CardTitle>Update Profile</CardTitle>

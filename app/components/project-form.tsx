@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label"
 import { X } from 'lucide-react'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
+import toast from 'react-hot-toast'
 
 interface ProjectFormValues {
     title: string;
@@ -60,6 +61,9 @@ export function ProjectForm() {
     const [newTechnology, setNewTechnology] = useState('')
 
     const onSubmit = async (data: ProjectFormValues) => {
+
+        const toastId = toast.loading("Submitting...");
+
         setLoading(true); // Set loading to true when submitting
         console.log(data);
 
@@ -87,10 +91,15 @@ export function ProjectForm() {
             );
             console.log(res);
             setLoading(false); // Reset loading on success
+            toast.success("submitted Successfully");
             window.location.reload(); // Refresh the page upon successful submission
+        
         } catch (error) {
             console.error("Error:", error);
             setLoading(false); // Reset loading on error
+            toast.error("Failed to submit");
+        } finally{
+            toast.dismiss(toastId);
         }
     };
 
@@ -177,7 +186,7 @@ export function ProjectForm() {
                 <Label>Media (Choose either Image or Featured Video)</Label>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <Label htmlFor="image">Image</Label>
+                        <Label htmlFor="image">Image :<span>"If you do not have then try<a className='text-blue-400' target='_blank' href='https://gradii.keshavbagaade.com/'> Visit </a>"</span></Label>
                         <Controller
                             name="image"
                             control={control}
@@ -188,7 +197,7 @@ export function ProjectForm() {
                     </div>
 
                     <div>
-                        <Label htmlFor="featuredVideo">Featured Video</Label>
+                        <Label htmlFor="featuredVideo">Featured Video : <span> "less than 30s" </span></Label>
                         <Controller
                             name="featuredVideo"
                             control={control}
@@ -202,7 +211,7 @@ export function ProjectForm() {
             </div>
 
             <div>
-                <Label htmlFor="thumbnail">Thumbnail</Label>
+                <Label htmlFor="thumbnail">Thumbnail: <span>"If you do not have then try<a className='text-blue-400' target='_blank' href='https://gradii.keshavbagaade.com/'> Visit </a>"</span></Label>
                 <Controller
                     name="thumbnail"
                     control={control}

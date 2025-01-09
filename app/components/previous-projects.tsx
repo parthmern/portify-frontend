@@ -13,6 +13,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 interface Project {
   id: number;
@@ -45,7 +46,8 @@ export function PreviousProjects() {
   }
 
   async function handleRemoveProject(projectId: number) {
-   
+    
+    const toastId = toast.loading(`Deleting ${projectId}`)
 
       try{
         
@@ -53,9 +55,12 @@ export function PreviousProjects() {
       console.log(res);
       setPrevProjects((prev:any) => prev.filter((project:any) => project.id !== projectId));
       console.log(`Project with ID ${projectId} removed successfully.`);
-
+      toast.success("Deleted");
       }catch(error){
         console.log(error);
+        toast.error("Error in deletion");
+      }finally{
+        toast.dismiss(toastId);
       }
 
 
