@@ -13,7 +13,7 @@ export default function ProfileCard() {
   ]
 
   return (
-    <Card className="w-full  max-w-md mx-auto">
+    <Card className="w-full bg-[#0f1011] text-white max-w-md mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl font-bold text-center">Profile Overview</CardTitle>
       </CardHeader>
@@ -22,7 +22,7 @@ export default function ProfileCard() {
           <Link className='' key={section.href} href={section.href} passHref>
             <Button
               variant="outline"
-              className="w-full justify transition-all duration-200 hover:bg-black/20 start text-left font-normal"
+              className="w-full justify transition-all duration-200 bg-[#0f1011] hover:bg-white/80 start text-left font-normal"
             >
               {section.title}
             </Button>

@@ -10,6 +10,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { AlertCircle, CheckCircle2 } from 'lucide-react'
 import ProfileCard from '../components/profile-card'
 import { EditNavbar } from '../components/EditNavbar'
+import toast from 'react-hot-toast'
 
 export default function UsernameSettingPage() {
   const { data: session, status } = useSession()
@@ -43,8 +44,9 @@ export default function UsernameSettingPage() {
     setIsPending(true)
     setState({ success: null, error: null })
 
+    const toastId = toast.loading("Updating username...")
+
     try {
-      
      
       // Update username via API
       const result = await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/username`, {
@@ -58,10 +60,16 @@ export default function UsernameSettingPage() {
       } else {
         setState({ success: `Username updated to ${username}`, error: null })
       }
+
+      toast.success("Username updated")
     } catch (error) {
       setState({ error: 'An unexpected error occurred. Please try again.', success: null })
+      toast.error("Username updation failed")
     } finally {
       setIsPending(false)
+      
+      toast.dismiss(toastId)
+
     }
   }
   console.log(state);
@@ -74,11 +82,11 @@ export default function UsernameSettingPage() {
 
   return (
     <>
-    <EditNavbar />
+    <EditNavbar className={"block w-full mb-6"} />
 
-    <div className="flex gap-x-5 items-center justify-center min-h-screen text-white bg-[#08090a]">
+    <div className="flex flex-col gap-y-3 md:flex-row gap-x-5 items-center justify-center min-h-[80vh] text-white bg-[#08090a]">
       
-      <Card className="w-full max-w-md">
+      <Card className="w-[70%] md:w-full bg-[#0f1011] text-white max-w-md">
         <CardHeader>
           <CardTitle>Set Your Username</CardTitle>
           <CardDescription>Choose a unique username for your profile</CardDescription>
@@ -96,7 +104,7 @@ export default function UsernameSettingPage() {
                   onChange={handleUsernameChange}
                   required
                 />
-                <div>{username ? `Your portfolio is live on https://localhost:3000/${username}` : "not live yet set username to make it live" } {}</div>
+                <div>{username ? (<p>Your portfolio is live on <a target="_blank" href={`https://portify.live/${username}`} className='cursor-pointer text-[#ff31ff] monoFont' >https://portify.live/{username}</a></p>) : "not live yet set username to make it live" } {}</div>
               </div>
               {state.error && (
                 <div className="flex items-center text-red-500 space-x-2">

@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Norican&display=swap');
 @tailwind base;
 @tailwind components;
@@ -15,6 +16,13 @@ h1, h2, h3, p {
 #mainPage{
   font-family: var(--font-geist-sans);
 }
+
+.monoFont {
+  font-family: "Space Mono", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 
 .workCard {
   border: none; /* Remove other borders */

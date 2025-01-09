@@ -57,7 +57,7 @@ export default function Home() {
             </p>
           </div>
           <div className="mx-auto flex flex-col mt-14 items-center justify-center">
-            <RainbowButton onClick={handleClick} children="Try Now" />
+            <RainbowButton onClick={handleClick} children="Build for Free" />
           </div>
           <div className="mx-auto flex flex-col mt-14 items-center justify-center">
             <p>Right now in Developing phase ...</p>
