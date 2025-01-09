@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
+import toast from 'react-hot-toast'
 
 interface EducationItem {
     name: string
@@ -24,13 +25,18 @@ export function PreviousEducation() {
 
     async function fetchEducation() {
         console.log("=============================================================================", userId);
+        const toastId = toast.loading("Fetching Prev Education");
         if (!userId) return [];
         try {
             const res = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/education/${userId}`);
             console.log(res.data);
             setPreviousEducation(res.data);
+            toast.success("Fetched Successfully");
         } catch (error) {
             console.error("Error fetching education data:", error);
+            toast.error("Failed Fetching");
+        }finally{
+            toast.dismiss(toastId);
         }
     }
 
@@ -46,16 +52,19 @@ export function PreviousEducation() {
 
     // Function to handle item removal
     const handleRemove = async (id: string) => {
+        const toastId = toast.loading(`Deleting ${id}`);
         console.log("Removing item with ID:", id);
         try {
             const res = await axios.delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/education/${id}`);
             console.log(res);
                
-                fetchEducation();
-            
+            fetchEducation();
+            toast.success("Deleted");
         } catch (error) {
             console.error("Error removing education item:", error);
+            toast.error("Deletion failed");
         }
+        toast.dismiss(toastId);
     };
 
     return (

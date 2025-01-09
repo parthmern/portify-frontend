@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { X } from 'lucide-react'
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
+import toast from 'react-hot-toast'
 
 export default function SkillsSection() {
     const [skills, setSkills] = useState<string[]>([])
@@ -17,6 +18,7 @@ export default function SkillsSection() {
     let userId = session?.data?.user?.id;
 
     async function fetchSkills() {
+        const toadtId = toast.loading("Fetching prev data");
         try {
             const req = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/skills/${userId}`);
             console.log(req);
@@ -24,10 +26,13 @@ export default function SkillsSection() {
             const fetchedGithubUsername = req?.data?.skills?.githubUsername || 'null';
             setSkills(fetchedSkills);
             setGithubUsername(fetchedGithubUsername);
+            toast.success("fetched");
         } catch (error) {
             console.log(error);
+            toast.error("failed fetching");
         } finally {
             setFetchingSkills(false);
+            toast.dismiss(toadtId);
         }
     }
 
@@ -57,6 +62,7 @@ export default function SkillsSection() {
 
     const handleSubmit = async () => {
         console.log('Submitting skills and GitHub username:', { skills, githubUsername });
+        const toastId = toast.loading("Updating skills");
 
         try {
             const res = await axios.post(
@@ -65,8 +71,12 @@ export default function SkillsSection() {
                 { headers: { 'Content-Type': 'application/json' } }
             );
             console.log(res);
+            toast.success("updated");
         } catch (error) {
             console.log(error);
+            toast.error("failed");
+        }finally{
+            toast.dismiss(toastId);
         }
     }
 

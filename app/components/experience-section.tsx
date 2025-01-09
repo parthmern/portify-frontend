@@ -31,6 +31,7 @@ import { Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
+import  toast  from 'react-hot-toast';
 
 export default function ExperienceSection() {
   const [experiences, setExperiences] = useState<Experience[]>([])
@@ -53,6 +54,7 @@ export default function ExperienceSection() {
   }, [session?.user?.id])
 
   const fetchExperiences = async () => {
+    const toastId = toast.loading("fetching prev Experiences")
     setIsLoading(true)
     setError(null)
     try {
@@ -97,10 +99,13 @@ export default function ExperienceSection() {
       console.log(res);
 
       setExperiences(res?.data) // Set the fake data to the state
+      toast.success("fetched");
     } catch (err) {
       setError('Failed to load experiences. Please try again.')
+      toast.error("Failed to fetch");
     } finally {
       setIsLoading(false)
+      toast.dismiss(toastId);
     }
   }
 
@@ -116,6 +121,7 @@ export default function ExperienceSection() {
   }
 
   const handleAddExperience = async (e: React.FormEvent) => {
+    const toastId = toast.loading("Adding...");
     e.preventDefault()
     setIsLoading(true)
     setError(null)
@@ -174,15 +180,19 @@ export default function ExperienceSection() {
 
         fetchExperiences()
 
+        toast.success("Added Successfully");
 
     } catch (err) {
       setError('Failed to add experience. Please try again.')
+      toast.error("Failed to addd");
     } finally {
       setIsLoading(false)
+      toast.dismiss(toastId);
     }
   }
 
   const handleRemoveExperience = async (id: string) => {
+    const toastId = toast.loading(`deleting ${id}`);
     console.log("deleting id", id);
     setIsLoading(true)
     setError(null)
@@ -193,12 +203,16 @@ export default function ExperienceSection() {
 
       fetchExperiences();
 
+      toast.success("Deleted");
+
       // // Remove the experience from the state
       // setExperiences(prev => prev.filter(exp => exp.id !== id))
     } catch (err) {
       setError('Failed to remove experience. Please try again.')
+      toast.error("failed to delete");
     } finally {
       setIsLoading(false)
+      toast.dismiss(toastId);
     }
   }
 

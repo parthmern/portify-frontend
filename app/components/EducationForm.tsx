@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import axios from 'axios'
 import { useSession } from 'next-auth/react'
+import toast from 'react-hot-toast'
+
 
 interface EducationFormData {
     name: string
@@ -20,6 +22,8 @@ interface EducationFormData {
 }
 
 export function EducationForm() {
+    
+
     const [formData, setFormData] = useState<EducationFormData>({
         name: '',
         href: '',
@@ -49,6 +53,9 @@ export function EducationForm() {
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
+
+        const toastId = toast.loading("Submitting...");
+
         e.preventDefault()
         setLoading(true) // Set loading to true when the form is submitted
 
@@ -85,10 +92,18 @@ export function EducationForm() {
                 userId: session?.user?.id
             })
             setPreviewUrl(null)
+            toast.success("Submitted");
+
+            window.location.reload();
+
+
+
         } catch (error) {
             console.error(error)
+            toast.error("Failed to submit");
         } finally {
             setLoading(false) // Set loading to false after submission
+            toast.dismiss(toastId);
         }
     }
 
