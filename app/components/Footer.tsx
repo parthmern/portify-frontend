@@ -10,7 +10,7 @@ export default function Footer(){
                     <nav className="mt-8 text-sm" aria-label="quick links">
                         <div className="-my-1 flex justify-center gap-x-6">
                             <a className="inline-block rounded-lg px-2 py-1 text-sm text-gray-300 hover:bg-slate-100 hover:text-slate-900" href="/">Home</a>
-                            
+                            <a className="inline-block rounded-lg px-2 py-1 text-sm text-gray-300 hover:bg-slate-100 hover:text-slate-900" target="_blank" href="https://portify.live/parthmern">portify.live/parthmern</a>
                         </div>
                     </nav>
                 </div>
